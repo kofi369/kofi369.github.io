@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f4f6fa">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Word Cards">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="style.css">
+  <title>Word Cards</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <h1>Word Cards</h1>
+        <p>Твои слова — твой темп</p>
+      </div>
+      <button id="openSettings" class="icon-button" aria-label="Настройки" title="Настройки">⚙</button>
+    </header>
+
+    <nav class="tabs" aria-label="Разделы">
+      <button class="tab active" data-tab="study">Изучение</button>
+      <button class="tab" data-tab="words">Мои слова <span id="wordCount" class="count">0</span></button>
+    </nav>
+
+    <main>
+      <section id="studyPanel" class="panel">
+        <div class="settings-row">
+          <label>Направление
+            <select id="direction">
+              <option value="en_ru">Английский → русский</option>
+              <option value="ru_en">Русский → английский</option>
+            </select>
+          </label>
+          <label>Карточек
+            <select id="sessionSize">
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="20">20</option>
+              <option value="all">Все</option>
+            </select>
+          </label>
+        </div>
+        <label class="toggle-line">
+          <input type="checkbox" id="weightedMode" checked>
+          <span>Чаще показывать сложные слова</span>
+        </label>
+
+        <button id="flashcard" class="flashcard" aria-label="Перевернуть карточку">
+          <span id="cardText" class="card-text">Добавь первое слово</span>
+        </button>
+
+        <div class="card-controls">
+          <button id="prevBtn" class="button secondary">← Назад</button>
+          <button id="nextBtn" class="button secondary">Следующая</button>
+        </div>
+        <div class="answer-controls">
+          <button id="hardBtn" class="button hard">Не знаю</button>
+          <button id="knownBtn" class="button known">Знаю ✓</button>
+        </div>
+        <div class="progress-row">
+          <span id="progressText">Добавь слова, чтобы начать</span>
+          <button id="restartBtn" class="text-button">Новый подход</button>
+        </div>
+      </section>
+
+      <section id="wordsPanel" class="panel hidden">
+        <form id="wordForm" class="word-form">
+          <input id="englishInput" type="text" placeholder="Слово на английском" autocomplete="off" required>
+          <input id="russianInput" type="text" placeholder="Перевод на русский" autocomplete="off" required>
+          <div class="form-buttons">
+            <button id="saveWordBtn" class="button primary" type="submit">Добавить слово</button>
+            <button id="cancelEditBtn" class="button secondary hidden" type="button">Отмена</button>
+          </div>
+        </form>
+
+        <div class="import-export">
+          <button id="importBtn" class="button secondary">Импорт words.json</button>
+          <button id="exportBtn" class="button secondary">Экспорт слов</button>
+          <input id="importFile" type="file" accept=".json,application/json" hidden>
+        </div>
+        <p class="small-note">Импортируй файл words.json из Windows-версии, чтобы перенести свой словарь на iPhone.</p>
+        <div id="wordList" class="word-list"></div>
+        <p id="emptyWords" class="empty-state">Пока нет слов. Добавь первое слово выше.</p>
+      </section>
+
+      <section id="settingsPanel" class="panel hidden">
+        <h2>Настройки</h2>
+        <p class="small-note">Слова сохраняются локально в этом браузере на этом устройстве. Для переноса на другой телефон используй экспорт и импорт.</p>
+        <button id="settingsImportBtn" class="button secondary full">Импортировать словарь JSON</button>
+        <button id="settingsExportBtn" class="button secondary full">Экспортировать словарь JSON</button>
+        <button id="closeSettings" class="button primary full">Готово</button>
+      </section>
+    </main>
+    <footer>Word Cards <span>•</span> офлайн после первого открытия</footer>
+  </div>
+
+  <dialog id="resultDialog" class="result-dialog">
+    <div class="dialog-content">
+      <div class="success-mark">✓</div>
+      <h2>Подход завершён</h2>
+      <p id="resultSummary">Просмотрено карточек: 0</p>
+      <div class="score-number" id="scorePercent">0%</div>
+      <p id="scoreDetail" class="small-note">Правильных ответов: 0 из 0</p>
+      <button id="continueBtn" class="button primary full">Продолжить</button>
+    </div>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
